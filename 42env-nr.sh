@@ -207,7 +207,19 @@ if [ "$(uname -o)" = "Android" ]; then
             sleep 2
             print_ok
             print_info "Instalando paquetes necesarios..."
-            pkg install curl wget git zsh unzip python lsd bat neovim xclip -y > /dev/null 2>&1
+            pkg install curl wget which git zsh unzip python lsd bat neovim xclip -y > /dev/null 2>&1
+            sleep 2
+            print_ok
+        fi
+        if [ $(echo $SHELL | grep -o zsh) ]; then
+            print_installed "La shell por defecto ya es ${COLOR_YELLOW}zsh${COLOR_WHITE}..."
+            sleep 2
+            print_pass
+        else
+            print_info "Configurando ${COLOR_YELLOW}zsh${COLOR_WHITE} como shell por defecto..."
+            $F_ZSH=$(which zsh)
+            chsh -s $F_ZSH
+            [ -z "$ZSH_VERSION" ] && exec "$F_ZSH" -l
             sleep 2
             print_ok
         fi
@@ -217,17 +229,6 @@ if [ "$(uname -o)" = "Android" ]; then
     fi
 else
 # INSTALACIÓN EN LINUX
-    if [ $(echo $SHELL | grep -o zsh) ]; then
-        print_installed "La shell por defecto ya es ${COLOR_YELLOW}zsh${COLOR_WHITE}..."
-        sleep 2
-        print_pass
-    else
-        print_info "Configurando ${COLOR_YELLOW}zsh${COLOR_WHITE} como shell por defecto..."
-        $F_ZSH=$(which zsh)
-        [ -z "$ZSH_VERSION" ] && exec "$F_ZSH" -l
-        sleep 2
-        print_ok
-    fi
     boost_zsh
     42tools
     nf_linux
