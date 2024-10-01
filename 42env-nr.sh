@@ -227,8 +227,8 @@ if [ "$(uname -o)" = "Android" ]; then
         42tools
         nf_termux
     fi
-else
 # INSTALACIÓN EN LINUX
+else
     boost_zsh
     42tools
     nf_linux
