@@ -1,0 +1,40 @@
+
+# CUSTOM ALIASES by dsarmien
+alias 42nt='norminette -R CheckForbiddenSourceHeader'
+alias 42ft='c_formatter_42 $1 > /dev/null 2>&1'
+alias bat='bat -l perl --style=numbers'
+alias c='clear'
+alias caa='cat */*'
+alias caf='cat $1'
+alias nv='nvim.appimage'
+alias cfgi='nv $HOME/.config/nvim/init.vim'
+alias cfgv='nv $HOME/.vimrc'
+alias cfgz='nv $HOME/.zshrc'
+alias gcf='gcc -Wall -Wextra -Werror -o $1'
+alias gta='git add $1'
+alias gtaa='git add .'
+alias gtc='git commit -m $1'
+alias gtpu='git push -u origin master'
+alias gtp='git push'
+alias gts='git status'
+alias gtd='git diff \$1'
+alias gtl="git log --format='%h | %ce | %cs | %ch | %s' -n10"
+alias gtt='git tag | sort -V'
+alias la='ls -la */*'
+alias ls='lsd --group-dirs=first'
+alias ll='lsd -lha --group-dirs=first'
+alias llo='lsd -lha --group-dirs=first --permission octal'
+alias fl='ft_lock'
+
+#CUSTOM FUNCTIONS by dsarmien
+function cca {
+        cc -Wall -Wextra -Werror *.c -o $(basename $1 .c)
+}
+
+function ccf {
+        cc -Wall -Wextra -Werror $1 -o $(basename $1 .c)
+}
+
+function ccg {
+        cc -Wall -Wextra -Werror -g -o $(basename $1 .c)
+}
