@@ -131,7 +131,6 @@ boost_zsh() {
         sleep 1
         print_error
     fi
-    42tools
 }
 
 42tools() {
