@@ -207,7 +207,7 @@ if [ "$(uname -o)" = "Android" ]; then
             sleep 2
             print_ok
             print_info "Instalando paquetes necesarios..."
-            pkg install curl wget git zsh unzip python lsd bat neovim -y > /dev/null 2>&1
+            pkg install curl wget git zsh unzip python lsd bat neovim xclip -y > /dev/null 2>&1
             sleep 2
             print_ok
         fi

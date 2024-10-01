@@ -8,18 +8,10 @@
 Automatiza la instalación y configuración del entorno básico necesario para programar en el Cursus de 42.<br>
 Testeado en las siguientes distribuciones (INFORMACIÓN TEMPORAL):
 
-| Distribución                                                   | Codename      | Estado |
-| ----------------                                               | ------------- | ------ |
-| [Ubuntu 22.04 LTS (WSL)](https://releases.ubuntu.com/jammy/)   | Jammy         | ?      |
-| [Ubuntu 24.04 LTS (WSL)](https://releases.ubuntu.com/noble/)   | Noble         | F      |
-| [Debian 12 LTS (WSL)](https://www.debian.org/releases/stable/) | Bookworm      | F      |
-
-# Problemas Conocidos
-
-Es posible que la ejecución de `42env.sh` en algunos entornos basados en `WSL (Windows Subsystem for Linux)` ocasione ciertos problemas relacionados con la instalación de paquetes con `pip/pip3`. La solución más simple es instalar `pipx` o bien crear un `virtualenv` en el que instalar estos paquetes (lo cual es recomendable).
-Luego es necesario incluir el directorio 'bin' del virtualenv en el PATH del sistema para que se pueda llamar a los binarios correspondientes desde fuera del mismo.
-
-Al finalizar la ejecución del script, en el momento que se nos pide reiniciar el sistema, también nos dará error si estamos usando Debian bajo WSL, esto es debido a que no podemos hacer `sudo reboot` como haríamos normalmente en nuestra máquina virtual. La solución es tan simple como cerrar WSL con el comando `exit` y volver a lanzar nuestra distro bajo WSL. Las distribuciones que tengan estos problemas están marcadas con el estado `F`.
+| Distribución                                                  | Codename      | Estado |
+| ----------------                                              | ------------- | ------ |
+| [Ubuntu 22.04 LTS (42)](https://releases.ubuntu.com/jammy/)   | Jammy         | Ok     |
+| [Android Termux](https://f-droid.org/es/packages/com.termux/) | Termux        | Ok     |
 
 # Índice
 
@@ -36,8 +28,7 @@ Al finalizar la ejecución del script, en el momento que se nos pide reiniciar e
     - [LSD (LSDeluxe)](#lsd-lsdeluxe)
     - [BAT (batcat)](#batcat)
     - [xclip](#xclip)
-    - [LazyGit](#lazygit)
-7. [En proceso...](#en-proceso)
+7. [42env](#42env)
 
 # Software
 
@@ -47,40 +38,30 @@ Este script instala el siguiente software en el caso de que no esté instalado:
 - **oh-my-zsh |** [Oh-My-Zsh](https://ohmyz.sh/)
 - **zsh-autosuggestions |** [Plugin zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions)
 - **zsh-syntax-highlighting |** [Plugin zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting)
-- **terminator |** [Terminator](https://gnome-terminator.org/)
 - **git |** [Git Fast Version Control](https://git-scm.com/doc)
 - **python3 |** [Python 3.11.2](https://www.python.org/downloads/release/python-3112/)
 - **pip3 |** [Package Installer for Python](https://pip.pypa.io/en/stable/)
-- **ripgrep |** [Recursively searches by regex pattern](https://github.com/BurntSushi/ripgrep)
-- **fd / fd-find |** [Simply alternative to 'find'](https://github.com/sharkdp/fd)
-- **luarocks |** [Package manager for Lua modules](https://luarocks.org/)
 - **neovim |** [Hyperextensible Vim-based text editor](https://neovim.io/) + vim-plug + 42 plugins
 - **nerd fonts |** [Iconic font aggregator, collection, and patcher](https://www.nerdfonts.com/) | Hack Nerd Font
 - **lsd |** [The next gen ls command](https://github.com/lsd-rs/lsd)
 - **bat |** [A cat clone with wings](https://github.com/sharkdp/bat)
 - **xclip |** [Command line interface to the X11 clipboard](https://github.com/astrand/xclip)
-- **lazygit |** [Simple terminal UI for git commands](https://github.com/jesseduffield/lazygit)
 - Atajos de teclado para 'nvim' y config para .zshrc
-
-# Recomendaciones previas
-
-> [!WARNING]
-> Antes de comenzar el proceso se recomienda hacer copia de seguridad o un snapshot del estado actual de la máquina virtual. Este script está pensado para uso en nuestro ordenador personal.
 
 # Instalación
 
 <img src="assets/000_running.png" alt="Script running" align="center" />
 
-Primero clonamos este repositorio y entramos en la carpeta `42env` creada.
+Primero clonamos este repositorio y entramos en la carpeta `42env-nr` creada.
 
 ```bash
-git clone https://github.com/WildZarek/42env.git; cd 42env
+git clone https://github.com/WildZarek/42env-nr.git; cd 42env-nr
 ```
 
 Asigna permisos de ejecución al script y ejecútalo. Se recomienda tener siempre maximizada la ventana de la shell.
 
 ```bash
-chmod +x 42env.sh; ./42env.sh
+chmod +x 42env-nr.sh; ./42env-nr.sh
 ```
 
 <img src="assets/001_install_log.png" alt="Installation log" align="center" />
@@ -90,15 +71,11 @@ chmod +x 42env.sh; ./42env.sh
 Al ejecutar el script, te pedirá tu usuario de la Intra 42, escríbelo y pulsa `Enter`<br>
 Este usuario se usará para configurar el header de 42 para nvim.
 
-Una vez que haya terminado todo el proceso, pulsa la tecla `Enter` y se reiniciará el equipo.<br>
-Después de arrancar el sistema, abre Terminator, maximiza la ventana y ejecuta `nvim`, acto seguido escribe `:PlugInstall` para que se complete la configuración de Neovim.
+Después de finalizar la instalación ejecuta `nvim`, acto seguido escribe `:PlugInstall` para que se complete la configuración de Neovim.
 
 ```bash
 nvim
 ```
-
-Si no pulsas con el ratón en la ventana de instalación, puede que el instalador te pida que pulses una tecla.<br>
-Si es tu caso, pulsa la tecla `Espacio`. La configuración continuará y finalizará cuando te solicite que pulses `Enter`.
 
 # NeoVim
 
@@ -207,17 +184,6 @@ cat archivo.txt | xclip
 
 En definitiva, es una herramienta muy útil que nos ahorra tiempo a la hora de trabajar con el portapapeles.
 
-## LazyGit
-
-LazyGit es ideal para quienes prefieren usar la terminal pero quieren una forma más cómoda y rápida de manejar Git sin tener que escribir todos los comandos manualmente. Resulta especialmente útil para desarrolladores que trabajan con repositorios grandes y complejos, ya que facilita la visualización de los cambios y permite moverse ágilmente entre las distintas secciones del repositorio.
-
-> [!NOTE]
-> ¡Por probarlo no pierdes nada!
-
-<div align="center">
-  <img src="assets/012_lazy_git.png" alt="lazy_git">
-</div>
-
 ## Atajos de teclado NeoVim
 
 > [!NOTE]
@@ -244,7 +210,7 @@ LazyGit es ideal para quienes prefieren usar la terminal pero quieren una forma 
 
 # Terminal
 
-## Terminator
+## Terminator (instalado en 42)
 <div align="center">
   <img src="https://avatars.githubusercontent.com/u/63008829" alt="Terminal Logo" width="256"/>
 </div>
@@ -286,8 +252,8 @@ LazyGit es ideal para quienes prefieren usar la terminal pero quieren una forma 
 | `Ctrl` + `Shift` + `R` | Reinicia el estado de la terminal |
 | `Ctrl` + `Shift` + `G` | Reinicia el estado de la terminal y limpia la pantalla |
 
-# En proceso...
-En el futuro se publicará una versión del proyecto para su instalación en entornos Android bajo Termux.
+# 42env
+Si quieres instalar una versión más completa de este proyecto en tu máquina virtual, ve a [42env](https://github.com/WildZarek/42env)
 
 > [!NOTE]
 > Si consideras útil este proyecto, apóyalo dando <strong>★ Star</strong> en el repositorio. ¡Gracias!
