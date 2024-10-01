@@ -6,7 +6,7 @@ alias bat='bat -l perl --style=numbers'
 alias c='clear'
 alias caa='cat */*'
 alias caf='cat $1'
-alias nv='nvim.appimage'
+alias nv='nvim'
 alias cfgi='nv $HOME/.config/nvim/init.vim'
 alias cfgv='nv $HOME/.vimrc'
 alias cfgz='nv $HOME/.zshrc'
@@ -24,7 +24,6 @@ alias la='ls -la */*'
 alias ls='lsd --group-dirs=first'
 alias ll='lsd -lha --group-dirs=first'
 alias llo='lsd -lha --group-dirs=first --permission octal'
-alias fl='ft_lock'
 
 #CUSTOM FUNCTIONS by dsarmien
 function cca {

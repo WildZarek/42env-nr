@@ -165,6 +165,7 @@ nf_termux() {
     print_ok
     rm Hack.zip
     rm *.ttf
+    termux-reload-settings
 }
 
 nf_linux() {
