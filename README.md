@@ -258,6 +258,10 @@ Si quieres instalar una versión más completa de este proyecto en tu máquina v
 > [!NOTE]
 > Si consideras útil este proyecto, apóyalo dando <strong>★ Star</strong> en el repositorio. ¡Gracias!
 
+### LICENCIA
+
+This work is published under the terms of **[42 Unlicense](https://github.com/gcamerli/42unlicense)**.
+
 # ¡Happy hacking & coding! 😎
 
 [Volver al índice](#índice)
