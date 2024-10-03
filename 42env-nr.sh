@@ -164,7 +164,7 @@ nf_termux() {
     print_ok
     rm Hack.zip
     rm *.ttf
-    termux-reload-settings
+    termux-reload-settings > /dev/null 2>&1
 }
 
 nf_linux() {
@@ -199,10 +199,10 @@ nvim_linux() {
 if [ "$(uname -o)" = "Android" ]; then
     if [ -d "/data/data/com.termux" ]; then
         if [ "$(echo $TERMUX_VERSION)" ]; then
-            print_info "Detectado ${COLOR_YELLOW}Termux v$(echo $TERMUX_VERSION)${COLOR_WHITE}..."
+            print_installed "Detectado ${COLOR_YELLOW}Termux v$(echo $TERMUX_VERSION)${COLOR_WHITE}..."
             sleep 1
             print_info "Actualizando el sistema..."
-            pkg update && pkg upgrade -y > /dev/null 2>&1
+            pkg update > /dev/null 2>&1 && pkg upgrade -y > /dev/null 2>&1
             sleep 2
             print_ok
             print_info "Instalando paquetes necesarios..."
@@ -211,7 +211,7 @@ if [ "$(uname -o)" = "Android" ]; then
             print_ok
         fi
         if [ $(echo $SHELL | grep -o zsh) ]; then
-            print_installed "La shell por defecto ya es ${COLOR_YELLOW}zsh${COLOR_WHITE}..."
+            print_info "La shell por defecto ya es ${COLOR_YELLOW}zsh${COLOR_WHITE}..."
             sleep 2
             print_pass
         else
