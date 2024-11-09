@@ -192,6 +192,82 @@ nvim_linux() {
         wget -q https://github.com/neovim/neovim-releases/releases/download/v0.10.1/nvim.appimage -O $USR_BIN_DIR/nvim.appimage > /dev/null 2>&1
         sleep 2
         print_ok
+        # Configuración de Neovim + Plugins
+        # Plugins Path: $HOME/.local/share/nvim/plugged
+        VIMPLUG_FILE="$HOME/.local/share/nvim/site/autoload/plug.vim"
+        if [ $(which nvim) ]; then
+            sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim' > /dev/null 2>&1
+            if [ -f $VIMPLUG_FILE ]; then
+                print_info "Gestor de plugins ${COLOR_YELLOW}Vim-Plug${COLOR_WHITE} para NeoVim instalado..."
+                sleep 1
+                print_ok
+            else
+                print_warning "El gestor de plugins ${COLOR_YELLOW}Vim-Plug${COLOR_WHITE} para NeoVim no se instaló correctamente..."
+                sleep 1
+                print_error
+            fi
+        else
+            print_warning "${COLOR_YELLOW}NeoVim${COLOR_WHITE} no se instaló correctamente..."
+            sleep 1
+            print_error
+        fi
+        NVIM_SRC="./files/init.vim"
+        NVIM_DEST="$HOME/.config/nvim/lua"
+        NVIM_CFG_FILE="$NVIM_DEST/init.vim"
+        if [ -f $NVIM_SRC ]; then
+            if [ ! -d $NVIM_DEST ]; then
+                mkdir -p $NVIM_DEST
+            else
+                if [ ! -f $NVIM_CFG_FILE ]; then
+                    print_info "Copiando archivo ${COLOR_YELLOW}init.vim${COLOR_WHITE}..."
+                    cp "$NVIM_SRC" "$NVIM_CFG_FILE"
+                    sed -i "s/INTRAUSER/$INTRAUSER/g" "$NVIM_CFG_FILE"
+                    sleep 1
+                    print_ok
+                else
+                    print_installed "Archivo ${COLOR_YELLOW}init.vim${COLOR_WHITE} ya existente. Cancelando copia..."
+                    sleep 1
+                    print_pass
+                    if [ ! $(grep -q "let g:user42" $NVIM_CFG_FILE) ] && [ ! $(grep -q "let g:mail42" $NVIM_CFG_FILE) ]; then
+                        print_info "Configurando variables para el header de 42..."
+                        echo -e "let g:user42 = '${INTRAUSER}'" >> $NVIM_CFG_FILE
+                        echo -e "let g:mail42 = '${INTRAUSER}@student.42malaga.com'" >> $NVIM_CFG_FILE
+                        sleep 1
+                        print_ok
+                    else
+                        print_installed "El usuario de la Intra 42 ya está configurado."
+                    fi
+                fi
+            fi
+        else
+            print_warning "No se encontró el archivo ${COLOR_YELLOW}init.vim${COLOR_WHITE} en la ruta de origen..."
+            sleep 1
+            print_error
+        fi
+        # Configuración atajos de teclado para Nvim
+        KEYMAPS_LUA_SRC="./files/keymaps.lua"
+        KEYMAPS_LUA_DEST="$HOME/.config/nvim/lua/configs/"
+        if [ -f "$KEYMAPS_LUA_SRC" ]; then
+            if [ -d $KEYMAPS_LUA_DEST ]; then
+                print_info "Copiando archivo ${COLOR_YELLOW}keymaps.lua${COLOR_WHITE} al directorio de configuración de nvim..."
+                cp "$KEYMAPS_LUA_SRC" "$KEYMAPS_LUA_DEST"
+                sleep 1
+                print_ok
+            else
+                print_warning "No se encontró el directorio 'configs' de nvim. Creando los directorios..."
+                mkdir -p $KEYMAPS_LUA_DEST
+                sleep 1
+                print_ok
+                print_info "Copiando archivo ${COLOR_YELLOW}keymaps.lua${COLOR_WHITE} al directorio de configuración de nvim..."
+                cp "$KEYMAPS_LUA_SRC" "$KEYMAPS_LUA_DEST"
+                sleep 1
+                print_ok
+            fi
+        else
+            print_warning "No se encontró el archivo ${COLOR_YELLOW}keymaps.lua${COLOR_WHITE} en la ruta actual..."
+            sleep 1
+            print_error
+        print_info "Ejecuta 'nvim' (alias 'nv') y escribe ':PlugInstall' para que la configuración de Neovim se complete."
     fi
 }
 
@@ -234,88 +310,9 @@ else
     nvim_linux
 fi
 
-# Configuración de Neovim + Plugins
-# Plugins Path: $HOME/.local/share/nvim/plugged
-VIMPLUG_FILE="$HOME/.local/share/nvim/site/autoload/plug.vim"
-if [ $(which nvim) ]; then
-    sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim' > /dev/null 2>&1
-    if [ -f $VIMPLUG_FILE ]; then
-        print_info "Gestor de plugins ${COLOR_YELLOW}Vim-Plug${COLOR_WHITE} para NeoVim instalado..."
-        sleep 1
-        print_ok
-    else
-        print_warning "El gestor de plugins ${COLOR_YELLOW}Vim-Plug${COLOR_WHITE} para NeoVim no se instaló correctamente..."
-        sleep 1
-        print_error
-    fi
-else
-    print_warning "${COLOR_YELLOW}NeoVim${COLOR_WHITE} no se instaló correctamente..."
-    sleep 1
-    print_error
-fi
-
-NVIM_SRC="./files/init.vim"
-NVIM_DEST="$HOME/.config/nvim/lua"
-NVIM_CFG_FILE="$NVIM_DEST/init.vim"
-if [ -f $NVIM_SRC ]; then
-    if [ ! -d $NVIM_DEST ]; then
-        mkdir -p $NVIM_DEST
-    else
-        if [ ! -f $NVIM_CFG_FILE ]; then
-            print_info "Copiando archivo ${COLOR_YELLOW}init.vim${COLOR_WHITE}..."
-            cp "$NVIM_SRC" "$NVIM_CFG_FILE"
-            sed -i "s/INTRAUSER/$INTRAUSER/g" "$NVIM_CFG_FILE"
-            sleep 1
-            print_ok
-        else
-            print_installed "Archivo ${COLOR_YELLOW}init.vim${COLOR_WHITE} ya existente. Cancelando copia..."
-            sleep 1
-            print_pass
-            if [ ! $(grep -q "let g:user42" $NVIM_CFG_FILE) ] && [ ! $(grep -q "let g:mail42" $NVIM_CFG_FILE) ]; then
-                print_info "Configurando variables para el header de 42..."
-                echo -e "let g:user42 = '${INTRAUSER}'" >> $NVIM_CFG_FILE
-                echo -e "let g:mail42 = '${INTRAUSER}@student.42malaga.com'" >> $NVIM_CFG_FILE
-                sleep 1
-                print_ok
-            else
-                print_installed "El usuario de la Intra 42 ya está configurado."
-            fi
-        fi
-    fi
-else
-    print_warning "No se encontró el archivo ${COLOR_YELLOW}init.vim${COLOR_WHITE} en la ruta de origen..."
-    sleep 1
-    print_error
-fi
-
-KEYMAPS_LUA_SRC="./files/keymaps.lua"
-KEYMAPS_LUA_DEST="$HOME/.config/nvim/lua/configs/"
-if [ -f "$KEYMAPS_LUA_SRC" ]; then
-    if [ -d $KEYMAPS_LUA_DEST ]; then
-        print_info "Copiando archivo ${COLOR_YELLOW}keymaps.lua${COLOR_WHITE} al directorio de configuración de nvim..."
-        cp "$KEYMAPS_LUA_SRC" "$KEYMAPS_LUA_DEST"
-        sleep 1
-        print_ok
-    else
-        print_warning "No se encontró el directorio 'configs' de nvim. Creando los directorios..."
-        mkdir -p $KEYMAPS_LUA_DEST
-        sleep 1
-        print_ok
-        print_info "Copiando archivo ${COLOR_YELLOW}keymaps.lua${COLOR_WHITE} al directorio de configuración de nvim..."
-        cp "$KEYMAPS_LUA_SRC" "$KEYMAPS_LUA_DEST"
-        sleep 1
-        print_ok
-    fi
-else
-    print_warning "No se encontró el archivo ${COLOR_YELLOW}keymaps.lua${COLOR_WHITE} en la ruta actual..."
-    sleep 1
-    print_error
-
 echo ""
 
 print_installed "Todos los programas necesarios han sido instalados."
-
-print_info "Ejecuta 'nvim' (alias 'nv') y escribe ':PlugInstall' para que la configuración de Neovim se complete."
 
 echo ""
 echo ""
