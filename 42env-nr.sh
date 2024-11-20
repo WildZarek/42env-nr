@@ -184,7 +184,7 @@ nf_linux() {
 
 extra_tools_linux() {
     USR_BIN_DIR="$HOME/.local/bin"
-    # Descarga e instalación de herramientas extra
+    # Descarga e instalación de lsd
     print_info "Instalando herramientas extra..."
     if ! command -v lsd > /dev/null 2>&1; then
         print_info "Instalando ${COLOR_YELLOW}lsd${COLOR_WHITE}..."
@@ -202,6 +202,7 @@ extra_tools_linux() {
         print_installed "${COLOR_YELLOW}lsd${COLOR_WHITE} ya está instalado."
     fi
 
+    # Descarga e instalación de bat
     if ! command -v bat > /dev/null 2>&1; then
         print_info "Instalando ${COLOR_YELLOW}bat${COLOR_WHITE}..."
         wget -q https://github.com/sharkdp/bat/releases/download/v0.24.0/bat-musl_0.24.0_amd64.deb > /dev/null 2>&1
@@ -218,6 +219,7 @@ extra_tools_linux() {
         print_installed "${COLOR_YELLOW}bat${COLOR_WHITE} ya está instalado."
     fi
 
+    # Comprobación de xclip, en 42 Málaga ya viene instalado por defecto
     if ! command -v xclip > /dev/null  2>&1; then
         print_warning "${COLOR_YELLOW}xclip${COLOR_WHITE} no está instalado."
     else
