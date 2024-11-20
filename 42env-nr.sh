@@ -182,6 +182,43 @@ nf_linux() {
     fi
 }
 
+extra_tools_linux() {
+    USR_BIN_DIR="$HOME/.local/bin"
+    # Descarga e instalación de herramientas extra
+    print_info "Instalando herramientas extra..."
+    if ! command -v lsd > /dev/null 2>&1; then
+        print_info "Instalando ${COLOR_YELLOW}lsd${COLOR_WHITE}..."
+        wget -q https://github.com/lsd-rs/lsd/releases/download/v1.1.5/lsd-musl_1.1.5_amd64.deb > /dev/null 2>&1
+        # Extraer el archivo .deb
+        ar x lsd-musl_1.1.5_amd64.deb
+        # Extraer el archivo data.tar.zst
+        tar --zstd -xvf data.tar.zst
+        mv /usr/bin/lsd "$USR_BIN_DIR"
+        rm -rf /usr/
+        rm debian-binary control.tar.xz data.tar.zst lsd-musl_1.1.5_amd64.deb
+        sleep 2
+        print_ok
+    else
+        print_installed "${COLOR_YELLOW}lsd${COLOR_WHITE} ya está instalado."
+    fi
+
+    if ! command -v bat > /dev/null 2>&1; then
+        print_info "Instalando ${COLOR_YELLOW}bat${COLOR_WHITE}..."
+        wget -q https://github.com/sharkdp/bat/releases/download/v0.24.0/bat-musl_0.24.0_amd64.deb > /dev/null 2>&1
+        # Extraer el archivo .deb
+        ar x bat-musl_0.24.0_amd64.deb
+        # Extraer el archivo data.tar.zx
+        tar -xf data.tar.zx
+        mv /usr/bin/bat "$USR_BIN_DIR"
+        rm -rf /usr/
+        rm debian-binary control.tar.xz data.tar.zx bat-musl_0.24.0_amd64.deb
+        sleep 2
+        print_ok
+    else
+        print_installed "${COLOR_YELLOW}bat${COLOR_WHITE} ya está instalado."
+    fi
+}
+
 nvim_linux() {
     # Descarga del AppImage de Nvim desde el repo oficial
     USR_BIN_DIR="$HOME/.local/bin"
@@ -307,6 +344,7 @@ else
     boost_zsh
     42tools
     nf_linux
+    extra_tools_linux
     nvim_linux
 fi
 
