@@ -195,7 +195,7 @@ extra_tools_linux() {
         tar --zstd -xvf data.tar.zst
         mv /usr/bin/lsd "$USR_BIN_DIR"
         rm -rf /usr/
-        rm debian-binary control.tar.xz data.tar.zst lsd-musl_1.1.5_amd64.deb
+        rm debian-binary control.tar.zst data.tar.zst lsd-musl_1.1.5_amd64.deb
         sleep 2
         print_ok
     else
@@ -207,15 +207,21 @@ extra_tools_linux() {
         wget -q https://github.com/sharkdp/bat/releases/download/v0.24.0/bat-musl_0.24.0_amd64.deb > /dev/null 2>&1
         # Extraer el archivo .deb
         ar x bat-musl_0.24.0_amd64.deb
-        # Extraer el archivo data.tar.zx
-        tar -xf data.tar.zx
+        # Extraer el archivo data.tar.xz
+        tar -xf data.tar.xz
         mv /usr/bin/bat "$USR_BIN_DIR"
         rm -rf /usr/
-        rm debian-binary control.tar.xz data.tar.zx bat-musl_0.24.0_amd64.deb
+        rm debian-binary control.tar.xz data.tar.xz bat-musl_0.24.0_amd64.deb
         sleep 2
         print_ok
     else
         print_installed "${COLOR_YELLOW}bat${COLOR_WHITE} ya está instalado."
+    fi
+
+    if ! command -v xclip > /dev/null  2>&1; then
+        print_warning "${COLOR_YELLOW}xclip${COLOR_WHITE} no está instalado."
+    else
+        print_installed "${COLOR_YELLOW}xclip${COLOR_WHITE} ya está instalado."
     fi
 }
 
