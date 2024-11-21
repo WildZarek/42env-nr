@@ -78,6 +78,9 @@ Después de finalizar la instalación ejecuta `nvim`, acto seguido escribe `:Plu
 nvim
 ```
 
+> [!NOTE]
+> Si estás instalando este entorno en 42 Málaga (sin permisos sudo), en lugar de `nvim` deberás utilizar el alias `nv` en la terminal.
+
 # NeoVim
 
 Si ejecutas `nvim` sin ningún nombre de archivo, se abrirá a la izquierda el explorador de archivos en la ruta actual para que puedas navegar entre las distintas carpetas y archivos. Si se ejecuta pasando un nombre de archivo, entonces el foco cambia directamente a la ventana del archivo.
