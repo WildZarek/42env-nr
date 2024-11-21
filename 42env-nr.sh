@@ -46,7 +46,7 @@ print_info() {
 }
 
 print_installed() {
-    echo -e "${COLOR_WHITE}[${COLOR_MAGENTA}i${COLOR_WHITE}] $1${COLOR_RESET}"
+    echo -ne "${COLOR_WHITE}[${COLOR_MAGENTA}i${COLOR_WHITE}] $1${COLOR_RESET}"
 }
 
 print_ok() {
@@ -81,7 +81,7 @@ boost_zsh() {
             print_pass
         fi
     else
-        print_installed "Paquete ${COLOR_YELLOW}Oh-My-Zsh${COLOR_WHITE} ya está instalado."
+        print_installed "Paquete ${COLOR_YELLOW}Oh-My-Zsh${COLOR_WHITE} ya está instalado.\n"
     fi
 
     ZSH_PLUGIN1_PATH="$HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
@@ -91,7 +91,7 @@ boost_zsh() {
         sleep 2
         print_ok
     else
-        print_installed "Plugin ${COLOR_YELLOW}zsh-autosuggestions${COLOR_WHITE} ya está instalado."
+        print_installed "Plugin ${COLOR_YELLOW}zsh-autosuggestions${COLOR_WHITE} ya está instalado.\n"
     fi
 
     ZSH_PLUGIN2_PATH="$HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
@@ -101,7 +101,7 @@ boost_zsh() {
         sleep 2
         print_ok
     else
-        print_installed "Plugin ${COLOR_YELLOW}zsh-syntax-highlighting${COLOR_WHITE} ya está instalado."
+        print_installed "Plugin ${COLOR_YELLOW}zsh-syntax-highlighting${COLOR_WHITE} ya está instalado.\n"
     fi
 
     ZSHRC_SRC="./files/.zshrc"
@@ -141,7 +141,7 @@ boost_zsh() {
         sleep 2
         print_ok
     else
-        print_installed "${COLOR_YELLOW}norminette${COLOR_WHITE} ya está instalada."
+        print_installed "${COLOR_YELLOW}norminette${COLOR_WHITE} ya está instalada.\n"
     fi
 
     if ! pip3 show c-formatter-42 &> /dev/null
@@ -151,7 +151,7 @@ boost_zsh() {
         sleep 2
         print_ok
     else
-        print_installed "${COLOR_YELLOW}c-formatter-42${COLOR_WHITE} ya está instalado."
+        print_installed "${COLOR_YELLOW}c-formatter-42${COLOR_WHITE} ya está instalado.\n"
     fi
 }
 
@@ -178,14 +178,14 @@ nf_linux() {
         print_ok
         rm /tmp/Hack.zip
     else
-        print_installed "La fuente ${COLOR_YELLOW}Hack Nerd Font${COLOR_WHITE} ya está instalada."
+        print_installed "La fuente ${COLOR_YELLOW}Hack Nerd Font${COLOR_WHITE} ya está instalada.\n"
     fi
 }
 
 extra_tools_linux() {
     USR_BIN_DIR="$HOME/.local/bin"
     # Descarga e instalación de lsd
-    print_info "Instalando herramientas extra..."
+    print_info "Instalando herramientas extra...\n"
     if ! command -v lsd > /dev/null 2>&1; then
         print_info "Instalando ${COLOR_YELLOW}lsd${COLOR_WHITE}..."
         wget -q https://github.com/lsd-rs/lsd/releases/download/v1.1.5/lsd-musl_1.1.5_amd64.deb > /dev/null 2>&1
@@ -199,7 +199,7 @@ extra_tools_linux() {
         sleep 2
         print_ok
     else
-        print_installed "${COLOR_YELLOW}lsd${COLOR_WHITE} ya está instalado."
+        print_installed "${COLOR_YELLOW}lsd${COLOR_WHITE} ya está instalado.\n"
     fi
 
     # Descarga e instalación de bat
@@ -216,14 +216,14 @@ extra_tools_linux() {
         sleep 2
         print_ok
     else
-        print_installed "${COLOR_YELLOW}bat${COLOR_WHITE} ya está instalado."
+        print_installed "${COLOR_YELLOW}bat${COLOR_WHITE} ya está instalado.\n"
     fi
 
     # Comprobación de xclip, en 42 Málaga ya viene instalado por defecto
     if ! command -v xclip > /dev/null  2>&1; then
         print_warning "${COLOR_YELLOW}xclip${COLOR_WHITE} no está instalado."
     else
-        print_installed "${COLOR_YELLOW}xclip${COLOR_WHITE} ya está instalado."
+        print_installed "${COLOR_YELLOW}xclip${COLOR_WHITE} ya está instalado.\n"
     fi
 }
 
@@ -231,7 +231,7 @@ nvim_linux() {
     # Descarga del AppImage de Nvim desde el repo oficial
     USR_BIN_DIR="$HOME/.local/bin"
     if command -v nvim > /dev/null 2>&1; then
-        print_installed "${COLOR_YELLOW}NeoVim${COLOR_WHITE} ya está instalado."
+        print_installed "${COLOR_YELLOW}NeoVim${COLOR_WHITE} ya está instalado.\n"
     else
         print_info "Instalando ${COLOR_YELLOW}Neovim${COLOR_WHITE}..."
         wget -q https://github.com/neovim/neovim-releases/releases/download/v0.10.1/nvim.appimage -O $USR_BIN_DIR/nvim.appimage > /dev/null 2>&1
@@ -240,7 +240,7 @@ nvim_linux() {
         # Configuración de Neovim + Plugins
         # Plugins Path: $HOME/.local/share/nvim/plugged
         VIMPLUG_FILE="$HOME/.local/share/nvim/site/autoload/plug.vim"
-        if [ $(which nvim) ]; then
+        if command -v nv > /dev/null 2>&1; then
             sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim' > /dev/null 2>&1
             if [ -f $VIMPLUG_FILE ]; then
                 print_info "Gestor de plugins ${COLOR_YELLOW}Vim-Plug${COLOR_WHITE} para NeoVim instalado..."
@@ -257,7 +257,7 @@ nvim_linux() {
             print_error
         fi
         NVIM_SRC="./files/init.vim"
-        NVIM_DEST="$HOME/.config/nvim/lua"
+        NVIM_DEST="$HOME/.config/nvim/"
         NVIM_CFG_FILE="$NVIM_DEST/init.vim"
         if [ -f $NVIM_SRC ]; then
             if [ ! -d $NVIM_DEST ]; then
@@ -280,7 +280,7 @@ nvim_linux() {
                         sleep 1
                         print_ok
                     else
-                        print_installed "El usuario de la Intra 42 ya está configurado."
+                        print_installed "El usuario de la Intra 42 ya está configurado.\n"
                     fi
                 fi
             fi
@@ -312,6 +312,7 @@ nvim_linux() {
             print_warning "No se encontró el archivo ${COLOR_YELLOW}keymaps.lua${COLOR_WHITE} en la ruta actual..."
             sleep 1
             print_error
+        fi
         print_info "Ejecuta 'nvim' (alias 'nv') y escribe ':PlugInstall' para que la configuración de Neovim se complete."
     fi
 }
@@ -320,7 +321,7 @@ nvim_linux() {
 if [ "$(uname -o)" = "Android" ]; then
     if [ -d "/data/data/com.termux" ]; then
         if [ "$(echo $TERMUX_VERSION)" ]; then
-            print_installed "Detectado ${COLOR_YELLOW}Termux v$(echo $TERMUX_VERSION)${COLOR_WHITE}..."
+            print_installed "Detectado ${COLOR_YELLOW}Termux v$(echo $TERMUX_VERSION)${COLOR_WHITE}...\n"
             sleep 1
             print_info "Actualizando el sistema..."
             pkg update > /dev/null 2>&1 && pkg upgrade -y > /dev/null 2>&1
@@ -358,7 +359,7 @@ fi
 
 echo ""
 
-print_installed "Todos los programas necesarios han sido instalados."
+print_installed "Todos los programas necesarios han sido instalados.\n"
 
 echo ""
 echo ""
