@@ -157,12 +157,13 @@ boost_zsh() {
 
 nf_termux() {
     FONT_DIR="$HOME/.termux"
+    URL_DOWNLOAD_FONT="https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/Hack.zip"
     print_info "Instalando la fuente ${COLOR_YELLOW}Hack Nerd Font${COLOR_WHITE}..."
-    wget -q https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/Hack.zip -O Hack.zip
-    unzip -q Hack.zip > /dev/null 2>&1
+    wget -q $URL_DOWNLOAD_FONT -O $(basename $URL_DOWNLOAD_FONT)
+    unzip -q $(basename $URL_DOWNLOAD_FONT) > /dev/null 2>&1
     mv HackNerdFontMono-Regular.ttf $FONT_DIR/font.ttf
     print_ok
-    rm Hack.zip
+    rm $(basename $URL_DOWNLOAD_FONT)
     rm *.ttf
     termux-reload-settings > /dev/null 2>&1
 }
@@ -170,13 +171,14 @@ nf_termux() {
 nf_linux() {
     FONT_DIR="$HOME/.local/share/fonts"
     FONT_NAME="Hack"
+    URL_DOWNLOAD_FONT="https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/Hack.zip"
     if ! fc-list | grep -q "$FONT_NAME"; then
         print_info "Instalando la fuente ${COLOR_YELLOW}Hack Nerd Font${COLOR_WHITE}..."
-        wget -q https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/Hack.zip -O /tmp/Hack.zip
-        unzip -q /tmp/Hack.zip -d $FONT_DIR > /dev/null 2>&1
+        wget -q $URL_DOWNLOAD_FONT -O /tmp/$(basename $URL_DOWNLOAD_FONT)
+        unzip -q /tmp/$(basename $URL_DOWNLOAD_FONT) -d $FONT_DIR > /dev/null 2>&1
         fc-cache -f -v > /dev/null 2>&1
         print_ok
-        rm /tmp/Hack.zip
+        rm /tmp/$(basename $URL_DOWNLOAD_FONT)
     else
         print_installed "La fuente ${COLOR_YELLOW}Hack Nerd Font${COLOR_WHITE} ya está instalada.\n"
     fi
@@ -184,18 +186,19 @@ nf_linux() {
 
 extra_tools_linux() {
     USR_BIN_DIR="$HOME/.local/bin"
+    URL_DOWNLOAD_LSD="https://github.com/lsd-rs/lsd/releases/download/v1.1.5/lsd-musl_1.1.5_amd64.deb"
     # Descarga e instalación de lsd
     print_info "Instalando herramientas extra...\n"
     if ! command -v lsd > /dev/null 2>&1; then
         print_info "Instalando ${COLOR_YELLOW}lsd${COLOR_WHITE}..."
-        wget -q https://github.com/lsd-rs/lsd/releases/download/v1.1.5/lsd-musl_1.1.5_amd64.deb > /dev/null 2>&1
+        wget -q $URL_DOWNLOAD_LSD > /dev/null 2>&1
         # Extraer el archivo .deb
-        ar x lsd-musl_1.1.5_amd64.deb
+        ar x $(basename $URL_DOWNLOAD_LSD)
         # Extraer el archivo data.tar.zst
         tar --zstd -xvf data.tar.zst
         mv /usr/bin/lsd "$USR_BIN_DIR"
         rm -rf /usr/
-        rm debian-binary control.tar.zst data.tar.zst lsd-musl_1.1.5_amd64.deb
+        rm debian-binary control.tar.zst data.tar.zst $(basename $URL_DOWNLOAD_LSD)
         sleep 2
         print_ok
     else
@@ -204,15 +207,16 @@ extra_tools_linux() {
 
     # Descarga e instalación de bat
     if ! command -v bat > /dev/null 2>&1; then
+        URL_DOWNLOAD_BAT="https://github.com/sharkdp/bat/releases/download/v0.25.0/bat-musl_0.25.0_musl-linux-amd64.deb"
         print_info "Instalando ${COLOR_YELLOW}bat${COLOR_WHITE}..."
-        wget -q https://github.com/sharkdp/bat/releases/download/v0.24.0/bat-musl_0.24.0_amd64.deb > /dev/null 2>&1
+        wget -q $URL_DOWNLOAD_BAT > /dev/null 2>&1
         # Extraer el archivo .deb
-        ar x bat-musl_0.24.0_amd64.deb
+        ar x $(basename $URL_DOWNLOAD_BAT)
         # Extraer el archivo data.tar.xz
         tar -xf data.tar.xz
         mv /usr/bin/bat "$USR_BIN_DIR"
         rm -rf /usr/
-        rm debian-binary control.tar.xz data.tar.xz bat-musl_0.24.0_amd64.deb
+        rm debian-binary control.tar.xz data.tar.xz $(basename $URL_DOWNLOAD_BAT)
         sleep 2
         print_ok
     else
@@ -230,11 +234,12 @@ extra_tools_linux() {
 nvim_linux() {
     # Descarga del AppImage de Nvim desde el repo oficial
     USR_BIN_DIR="$HOME/.local/bin"
+    URL_DOWNLOAD_NVIM="https://github.com/neovim/neovim-releases/releases/download/v0.10.4/nvim-linux-x86_64.appimage"
     if command -v nvim > /dev/null 2>&1; then
         print_installed "${COLOR_YELLOW}NeoVim${COLOR_WHITE} ya está instalado.\n"
     else
         print_info "Instalando ${COLOR_YELLOW}Neovim${COLOR_WHITE}..."
-        wget -q https://github.com/neovim/neovim-releases/releases/download/v0.10.1/nvim.appimage -O $USR_BIN_DIR/nvim.appimage > /dev/null 2>&1
+        wget -q $URL_DOWNLOAD_NVIM -O $USR_BIN_DIR/nvim.appimage > /dev/null 2>&1
         sleep 2
         print_ok
         # Configuración de Neovim + Plugins
